@@ -22,6 +22,8 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->string('icon_path')->nullable();
             $table->string('image_path')->nullable();
+            $table->text('desc')->nullable();
+            $table->text('tags')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

@@ -29,6 +29,6 @@ Route::middleware('api')->prefix('auth')->group(function() {
 });
 
 Route::prefix('category')->group(function() {
-    Route::get('create', [CategoryController::class, 'create']);
+    Route::post('create', [CategoryController::class, 'create']);
     Route::get('list', [CategoryController::class, 'list']);
 });
