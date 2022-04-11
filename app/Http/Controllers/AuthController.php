@@ -44,12 +44,12 @@ class AuthController extends Controller
      */
     public function profile()
     {
-        // return response()->json(auth()->user());
-        try {
-            return response()->json(auth()->userOrFail());
-        } catch(UserNotDefinedException $err) {
-            return response()->json(['error' => $err], 400);
-        }
+        return response()->json(auth()->user());
+        // try {
+            // return response()->json(auth()->userOrFail());
+        // } catch(UserNotDefinedException $err) {
+        //     return response()->json(['error' => $err], 400);
+        // }
     }
 
     /**

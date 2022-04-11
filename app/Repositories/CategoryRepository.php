@@ -4,16 +4,17 @@ namespace App\Repositories;
 
 use App\Interfaces\CategoryInterface;
 use App\Models\Category;
+use Illuminate\Support\Str;
 
 class CategoryRepository implements CategoryInterface {
     public function listAll(string $sort = "id", string $order = "desc")
     {
-        return Category::all($order, $id);
+        return Category::orderBy($sort, $order)->get();
     }
 
-    public function findById(string $slug)
+    public function findById(int $id)
     {
-        return Category::where('slug', $slug)->first();
+        return Category::findOrFail($id);
     }
 
     public function findBySlug(string $slug)
@@ -23,6 +24,22 @@ class CategoryRepository implements CategoryInterface {
 
     public function create(array $data)
     {
-        return Category::where('slug', $slug)->first();
+        try {
+            $collection = collect($data);
+
+            // generate slug
+            $slug = Str::slug($collection['name'], '-');
+            $slugExistCount = Category::where('name', $collection['name'])->count();
+            if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
+
+            $category = new Category();
+            $category->name = $collection['name'];
+            $category->pretty_name = !empty($data->pretty_name) ? $collection['pretty_name'] : NULL;
+            $category->slug = $slug;
+            $resp = $category->save();
+            return $collection;
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
 }
